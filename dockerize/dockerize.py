@@ -32,6 +32,7 @@ class SymlinkOptions(object):
 class Dockerize(object):
 
     def __init__(self,
+                 user=None,
                  cmd=None,
                  entrypoint=None,
                  targetdir=None,
@@ -49,6 +50,9 @@ class Dockerize(object):
         if tag:
             self.docker['tag'] = tag
             LOG.debug('tag: %s', self.docker['tag'])
+        if user:
+            self.docker['user'] = user
+            LOG.debug('user: %s', self.docker['user'])
 
         self.targetdir = targetdir
         self.symlinks = symlinks
@@ -124,8 +128,8 @@ class Dockerize(object):
             self.copy_files()
             self.resolve_deps()
             self.populate()
-            self.generate_dockerfile()
             if self._build_image:
+                self.generate_dockerfile()
                 self.build_image()
         finally:
             if cleanup:

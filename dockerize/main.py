@@ -32,6 +32,7 @@ def parse_args():
                        help='Tag to apply to Docker image')
     group.add_argument('--cmd', '-c')
     group.add_argument('--entrypoint', '-e')
+    group.add_argument('--run-user', '-r', help='default user')
 
     group = parser.add_argument_group('Output options')
     group.add_argument('--no-build', '-n',
@@ -99,7 +100,8 @@ def main():
     if len(args.paths) == 1 and not args.entrypoint:
         args.entrypoint = args.paths[0]
 
-    app = Dockerize(cmd=args.cmd,
+    app = Dockerize(user=args.run_user,
+                    cmd=args.cmd,
                     entrypoint=args.entrypoint,
                     tag=args.tag,
                     targetdir=args.output_dir,
